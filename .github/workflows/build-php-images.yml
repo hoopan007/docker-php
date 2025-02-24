@@ -45,14 +45,14 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build and push ${{ matrix.version }}-cli
-        uses: docker/build-push-action@v4
-        with:
-          context: ./php/${{ matrix.version }}-cli
-          platforms: linux/amd64,linux/arm64
-          push: true
-          tags: |
-            hoopan/php:${{ matrix.version }}-cli
+      # - name: Build and push ${{ matrix.version }}-cli
+      #   uses: docker/build-push-action@v4
+      #   with:
+      #     context: ./php/${{ matrix.version }}-cli
+      #     platforms: linux/amd64,linux/arm64
+      #     push: true
+      #     tags: |
+      #       hoopan/php:${{ matrix.version }}-cli
 
       - name: Build and push ${{ matrix.version }}-fpm
         uses: docker/build-push-action@v4
@@ -63,22 +63,22 @@ jobs:
           tags: |
             hoopan/php:${{ matrix.version }}-fpm
 
-      - name: Build and push ${{ matrix.version }}-cli-alpine
-        uses: docker/build-push-action@v4
-        with:
-          context: ./php/${{ matrix.version }}-cli
-          file: ./php/${{ matrix.version }}-cli/Dockerfile-alpine
-          platforms: linux/amd64,linux/arm64
-          push: true
-          tags: |
-            hoopan/php:${{ matrix.version }}-cli-alpine
+      # - name: Build and push ${{ matrix.version }}-cli-alpine
+      #   uses: docker/build-push-action@v4
+      #   with:
+      #     context: ./php/${{ matrix.version }}-cli
+      #     file: ./php/${{ matrix.version }}-cli/Dockerfile-alpine
+      #     platforms: linux/amd64,linux/arm64
+      #     push: true
+      #     tags: |
+      #       hoopan/php:${{ matrix.version }}-cli-alpine
 
-      - name: Build and push ${{ matrix.version }}-fpm-alpine
-        uses: docker/build-push-action@v4
-        with:
-          context: ./php/${{ matrix.version }}-fpm
-          file: ./php/${{ matrix.version }}-fpm/Dockerfile-alpine
-          platforms: linux/amd64,linux/arm64
-          push: true
-          tags: |
-            hoopan/php:${{ matrix.version }}-fpm-alpine
+      # - name: Build and push ${{ matrix.version }}-fpm-alpine
+      #   uses: docker/build-push-action@v4
+      #   with:
+      #     context: ./php/${{ matrix.version }}-fpm
+      #     file: ./php/${{ matrix.version }}-fpm/Dockerfile-alpine
+      #     platforms: linux/amd64,linux/arm64
+      #     push: true
+      #     tags: |
+      #       hoopan/php:${{ matrix.version }}-fpm-alpine
