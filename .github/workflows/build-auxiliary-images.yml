@@ -5,30 +5,42 @@ on:
 #    branches: [ main ]
 
   workflow_dispatch:
+    inputs:
+      php_version:
+        description: 'PHP version to build (leave empty to build all versions)'
+        required: false
+        type: choice
+        options:
+          - ''
+          - '7.1'
+          - '7.2'
+          - '7.3'
+          - '7.4'
+          - '8.0'
+          - '8.1'
+          - '8.2'
+          - '8.3'
 
   schedule:
     - cron: '0 18 * * 6'
 
 jobs:
   build_and_push_php:
-
     runs-on: ubuntu-latest
-
+    
     strategy:
       matrix:
-        version:
-          - "7.1"
-          - "7.2"
-          - "7.3"
-          - "7.4"
-          - "8.0"
-          - "8.1"
-          - "8.2"
-          - "8.3"
+        version: ${{ inputs.php_version == '' && fromJSON('["7.1", "7.2", "7.3", "7.4", "8.0", "8.1", "8.2", "8.3"]') || fromJSON(format('["{0}"]', inputs.php_version)) }}
 
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
 
       - name: Login to DockerHub
         uses: docker/login-action@v2
@@ -40,32 +52,36 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: ./auxiliary/${{ matrix.version }}-cli-supervisor
+          platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            suyar/php:${{ matrix.version }}-cli-supervisor
+            hoopan/php:${{ matrix.version }}-cli-supervisor
 
       - name: Build and push ${{ matrix.version }}-cli-alpine-supervisor
         uses: docker/build-push-action@v4
         with:
           context: ./auxiliary/${{ matrix.version }}-cli-supervisor
           file: ./auxiliary/${{ matrix.version }}-cli-supervisor/Dockerfile-alpine
+          platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            suyar/php:${{ matrix.version }}-cli-alpine-supervisor
+            hoopan/php:${{ matrix.version }}-cli-alpine-supervisor
 
       - name: Build and push ${{ matrix.version }}-cli-cron
         uses: docker/build-push-action@v4
         with:
           context: ./auxiliary/${{ matrix.version }}-cli-cron
+          platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            suyar/php:${{ matrix.version }}-cli-cron
+            hoopan/php:${{ matrix.version }}-cli-cron
 
       - name: Build and push ${{ matrix.version }}-cli-alpine-cron
         uses: docker/build-push-action@v4
         with:
           context: ./auxiliary/${{ matrix.version }}-cli-cron
           file: ./auxiliary/${{ matrix.version }}-cli-cron/Dockerfile-alpine
+          platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            suyar/php:${{ matrix.version }}-cli-alpine-cron
+            hoopan/php:${{ matrix.version }}-cli-alpine-cron
