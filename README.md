@@ -16,12 +16,15 @@ PHP 版本生命周期参考 [PHP 版本支持](https://www.php.net/supported-ve
 
 - [2023-06-28] 移除 `php7.0` 构建支持，之前构建的镜像依然可以使用，具体原因可以查看 [#763](https://github.com/mlocati/docker-php-extension-installer/pull/763)
 - [2023-12-01] 新增 `php8.3` 构建支持，目前 `imagick` 还不支持该版本
+- [2026-10-27] 新增 `php8.4-fpm` 构建支持，暂不包含 8.4 的 cli、auxiliary 和 integration 镜像
 
 ## 构建镜像
 
 ### 主要镜像
 
 这些镜像都是从官方镜像构建的，不包含其他第三方软件。
+
+> 本 fork 的构建产物发布到 `hoopan/php`；下方历史版本的标签链接仍沿用上游 `suyar/php`。8.4 目前仅提供 `fpm` 变体，暂不包含 `cli`、`auxiliary` 和 `integration`。
 
 - PHP 7.0
     - [`suyar/php:7.0-fpm`](https://hub.docker.com/r/suyar/php/tags?name=7.0-fpm)
@@ -68,6 +71,9 @@ PHP 版本生命周期参考 [PHP 版本支持](https://www.php.net/supported-ve
     - [`suyar/php:8.3-fpm-alpine`](https://hub.docker.com/r/suyar/php/tags?name=8.3-fpm-alpine)
     - [`suyar/php:8.3-cli`](https://hub.docker.com/r/suyar/php/tags?name=8.3-cli)
     - [`suyar/php:8.3-cli-alpine`](https://hub.docker.com/r/suyar/php/tags?name=8.3-cli-alpine)
+- PHP 8.4
+    - [`hoopan/php:8.4-fpm`](https://hub.docker.com/r/hoopan/php/tags?name=8.4-fpm)
+    - [`hoopan/php:8.4-fpm-alpine`](https://hub.docker.com/r/hoopan/php/tags?name=8.4-fpm-alpine)
 
 ### 辅助镜像
 

@@ -20,6 +20,7 @@ on:
           - '8.1'
           - '8.2'
           - '8.3'
+          - '8.4'
 
 jobs:
   build_and_push_php:
@@ -27,7 +28,7 @@ jobs:
     
     strategy:
       matrix:
-        version: ${{ inputs.php_version == '' && fromJSON('["7.1", "7.2", "7.3", "7.4", "8.0", "8.1", "8.2", "8.3"]') || fromJSON(format('["{0}"]', inputs.php_version)) }}
+        version: ${{ inputs.php_version == '' && fromJSON('["7.1", "7.2", "7.3", "7.4", "8.0", "8.1", "8.2", "8.3", "8.4"]') || fromJSON(format('["{0}"]', inputs.php_version)) }}
 
     steps:
       - name: Checkout
@@ -73,12 +74,13 @@ jobs:
       #     tags: |
       #       hoopan/php:${{ matrix.version }}-cli-alpine
 
-      # - name: Build and push ${{ matrix.version }}-fpm-alpine
-      #   uses: docker/build-push-action@v4
-      #   with:
-      #     context: ./php/${{ matrix.version }}-fpm
-      #     file: ./php/${{ matrix.version }}-fpm/Dockerfile-alpine
-      #     platforms: linux/amd64,linux/arm64
-      #     push: true
-      #     tags: |
-      #       hoopan/php:${{ matrix.version }}-fpm-alpine
+      - name: Build and push ${{ matrix.version }}-fpm-alpine
+        if: matrix.version == '8.4'
+        uses: docker/build-push-action@v4
+        with:
+          context: ./php/${{ matrix.version }}-fpm
+          file: ./php/${{ matrix.version }}-fpm/Dockerfile-alpine
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: |
+            hoopan/php:${{ matrix.version }}-fpm-alpine
